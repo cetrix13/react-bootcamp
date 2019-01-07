@@ -1,0 +1,27 @@
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>React Bootcamp | Day 1</title>
+    <script crossorigin src="https://unpkg.com/react@16/umd/react.development.js"></script>
+    <script crossorigin src="https://unpkg.com/react-dom@16/umd/react-dom.development.js"></script>
+    <script src='https://unpkg.com/babel-standalone@6/babel.min.js'></script>
+</head>
+<body>
+    <div id="root"></div>
+    <script type="text/babel">
+    function Badge (props) {
+      return (
+        <div>
+          <img src={props.img} />
+          <h1>Name: {props.name} </h1>
+          <h3>username: {props.username} </h3>
+        </div>
+      )
+    }
+
+    ReactDOM.render(<Badge name="Aleksandr" username="cetrix13"
+    img="http://gravatar.com/avatar/732cc858330f6f7bd29dc83ecbbd729c?s=250&d=https%3A%2F%2Fs3.amazonaws.com%2Flaracasts%2Fimages%2Fdefault-avatar-2.png"/>,
+    document.getElementById('root'))
+    </script>
+</body>
+</html>
