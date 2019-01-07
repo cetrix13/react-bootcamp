@@ -1,0 +1,47 @@
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>React Bootcamp | Day 1</title>
+    <script crossorigin src="https://unpkg.com/react@16/umd/react.development.js"></script>
+    <script crossorigin src="https://unpkg.com/react-dom@16/umd/react-dom.development.js"></script>
+    <script src='https://unpkg.com/babel-standalone@6/babel.min.js'></script>
+</head>
+<body>
+    <div id="root"></div>
+    <script type="text/babel">
+    function Avatar(props) {
+      const img = React.createElement('img', { src: props.img });
+      return img;
+    }
+
+    function Label(props) {
+      const h1 = React.createElement('h1', null, 'Name: ' + props.name);
+      return h1;
+    }
+
+    function ScreenName(props) {
+      const h3 = React.createElement('h3', null, 'Username: ' + props.username);
+      return h3;
+    }
+
+    function Badge(props) {
+      const divElement = React.createElement('div', null,
+        <Avatar img = {props.user.img} />,
+        <Label name = { props.user.name } />,
+        <ScreenName username = { props.user.username } />
+      );
+
+      return divElement;
+    }
+
+    ReactDOM.render(
+      <Badge user={{
+        name: 'Aleksandr',
+        img: 'http://gravatar.com/avatar/732cc858330f6f7bd29dc83ecbbd729c?s=250&d=https%3A%2F%2Fs3.amazonaws.com%2Flaracasts%2Fimages%2Fdefault-avatar-2.png',
+        username: 'cetrix13'
+      }} />,
+      document.getElementById('root')
+    )
+    </script>
+</body>
+</html>
