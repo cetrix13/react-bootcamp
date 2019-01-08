@@ -5,6 +5,7 @@
   <script crossorigin src="https://unpkg.com/react@16/umd/react.development.js"></script>
   <script crossorigin src="https://unpkg.com/react-dom@16/umd/react-dom.development.js"></script>
   <script src='https://unpkg.com/babel-standalone@6/babel.min.js'></script>
+  <link rel="stylesheet" href="../../css/bootstrap.css" />
 </head>
 <body>
   <div id='app'></div>
@@ -29,7 +30,6 @@
     class Loading extends React.Component {
       constructor(props) {
         super(props);
-
         this.state = {
           text: 'Loading'
         };
@@ -43,6 +43,9 @@
             : this.setState((prevState) => ({ text: prevState.text + '.' }))
         }, 300)
       }
+      /**
+       * Remove running interval, when component is unmounted
+       */
       componentWillUnmount() {
         window.clearInterval(this.interval);
       }
@@ -56,17 +59,90 @@
     }
 
     class App extends React.Component {
+      constructor(props) {
+        super(props);
+        this.state = {
+          loading: true,
+          listOfRepos: [],
+          activeLanguage: '',
+        }
+        this.handleClick = this.handleClick.bind(this);
+      }
+      /**
+       * Itegration point to external API to fetch data
+       */
+      componentDidMount() {
+        this.fetchRepos(this.props.language);
+      }
+      /**
+       * If state was updated, fetch repos again with selected language
+       * @param  {Object} prevProps
+       * @param  {Object} prevState
+       */
+      componentDidUpdate(prevProps, prevState) {
+        if (prevState.activeLanguage !== this.state.activeLanguage) {
+          this.fetchRepos(this.state.activeLanguage);
+        }
+      }
+      /**
+       * Get popular repos of passed programming language
+       * @param  {string} lang
+       */
+      fetchRepos(lang) {
+        window.API.fetchPopularRepos(lang).then(repos => {
+          this.setState({
+            listOfRepos: repos,
+            loading: false,
+          });
+        });
+      }
+      /**
+       * Set in a state selected language
+       * @param  {string} value
+       */
+      handleClick(value) {
+        this.setState({
+          activeLanguage: value,
+          loading: true,
+        })
+      }
+      /**
+       * Dynamicaly renders loading component or list of repos
+       */
       render() {
-        return (
+        return (this.state.loading)
+        ? <Loading />
+        : (
           <div>
+              <ul>
+                <li><a href="#" onClick={ () => this.handleClick('all') } >All</a></li>
+                <li><a href="#" onClick={ () => this.handleClick('javascript') }>JavaScript</a></li>
+                <li><a href="#" onClick={ () => this.handleClick('ruby') }>Ruby</a></li>
+                <li><a href="#" onClick={ () => this.handleClick('python') }>Python</a></li>
+              </ul>
+              <div className="container">
+                <div className="row">
+              { this.state.listOfRepos.map(item => {
 
+                return (
+                  <div className="col-md-3" key = { item.id }>
+                    <h4 className="card-header"> { item.name }</h4>
+                      <div className="card-body">
+                      <p className="card-text">{ item.description } </p>
+                      </div>
+                  </div>
+                )
+              })
+              }
+              </div>
+              </div>
           </div>
         )
       }
     }
 
     ReactDOM.render(
-      <App />,
+      <App language ='all'/>,
       document.getElementById('app')
     )
   </script>
