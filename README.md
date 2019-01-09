@@ -10,5 +10,10 @@ Component state, updating state, click handlers.
 Lifecycle Events, componentDidMount, componentDidUpdate, componentWillUnmount, shouldComponentUpdate,
 ajax requests, dynamic rendering.
 
+## Day 4
+Create react app, react router v4, route matching, URL parameters, nested routes.
+![demo | day 4 ](img/day4-demo.jpg)
+
+
 
 
