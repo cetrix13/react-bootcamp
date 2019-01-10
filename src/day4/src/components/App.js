@@ -17,6 +17,10 @@ class App extends Component {
     }
     this.handleNavClick = this.handleNavClick.bind(this);
   }
+  /**
+   * Remember selected menu item
+   * @param {string} menuElement [description]
+   */
   handleNavClick(menuElement) {
     this.setState({
       activeMenuElement: menuElement

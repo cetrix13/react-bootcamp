@@ -57,14 +57,32 @@
         )
       }
     }
-
+    /**
+     * Navigation component
+     * @param {Object} props
+     */
+    function Nav(props) {
+        const nav = ['All', 'JavaScript', 'Ruby', 'Python'];
+        return (<ul className="list-group">
+        {   nav.map(item => {
+              const className = (props.selectedMenu === item.toLowerCase())
+              ? 'list-group-item active'
+              : 'list-group-item';
+              const lowerCaseName = item.toLowerCase();
+              return (<a key={ item }
+                onClick={ () => props.handleClickMenu(lowerCaseName) }
+                className = { className }>{ item }</a>)
+            })
+        }
+        </ul>)
+    }
     class App extends React.Component {
       constructor(props) {
         super(props);
         this.state = {
           loading: true,
           listOfRepos: [],
-          activeLanguage: '',
+          activeLanguage: 'all',
         }
         this.handleClick = this.handleClick.bind(this);
       }
@@ -113,28 +131,28 @@
         return (this.state.loading)
         ? <Loading />
         : (
-          <div>
-              <ul>
-                <li><a href="#" onClick={ () => this.handleClick('all') } >All</a></li>
-                <li><a href="#" onClick={ () => this.handleClick('javascript') }>JavaScript</a></li>
-                <li><a href="#" onClick={ () => this.handleClick('ruby') }>Ruby</a></li>
-                <li><a href="#" onClick={ () => this.handleClick('python') }>Python</a></li>
-              </ul>
-              <div className="container">
+          <div className="container">
+              <div className="row">
+                <div className="col-md-12">
+                  <Nav selectedMenu = { this.state.activeLanguage }
+                  handleClickMenu = { this.handleClick }/>
+                </div>
+              </div>
+              <hr />
                 <div className="row">
-              { this.state.listOfRepos.map(item => {
+              { this.state.listOfRepos.map(({ name, id, description, html_url, stargazers_count }) => {
 
                 return (
-                  <div className="col-md-3" key = { item.id }>
-                    <h4 className="card-header"> { item.name }</h4>
+                  <div className="col-md-3" key = { id }>
+                    <h4 className="card-header"><a href={ html_url }>{ name }</a></h4>
                       <div className="card-body">
-                      <p className="card-text">{ item.description } </p>
+                      <p className = "lead">&#10032; {stargazers_count}</p>
+                      <p className="card-text">{ description } </p>
                       </div>
                   </div>
                 )
               })
               }
-              </div>
               </div>
           </div>
         )
