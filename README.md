@@ -6,6 +6,8 @@ JSX, createElement, functional components, class components, explicit mutations.
 ## Day 2
 Component state, updating state, click handlers.
 
+![demo | day 2](img/day2-demo.jpg)
+
 ## Day 3
 Lifecycle Events, componentDidMount, componentDidUpdate, componentWillUnmount, shouldComponentUpdate,
 Ajax requests, dynamic rendering.
