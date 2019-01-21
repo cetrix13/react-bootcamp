@@ -6,18 +6,29 @@
   <script crossorigin src="https://unpkg.com/react@16/umd/react.development.js"></script>
   <script crossorigin src="https://unpkg.com/react-dom@16/umd/react-dom.development.js"></script>
   <script src='https://unpkg.com/babel-standalone@6/babel.min.js'></script>
+  <style>
+html {
+  position: relative;
+  min-height: 100%;
+}
+body {
+  background-color: #fcfbf7;
+}
+
+.container {
+  width: auto;
+  max-width: 680px;
+  padding: 0 15px;
+}
+</style>
 </head>
 <body>
-  <div class="container">
+    <main role="main" class="container">
       <div class="header clearfix">
-        <h3 class="text-muted">List of groceries</h3>
+        <h1 class="mt-5">Grocery list</h1>
       </div>
-      <div class="row">
-        <div class="col-lg-12">
           <div id="root"></div>
-        </div>
-      </div>
-  </div>
+  </main>
 
   <script type='text/babel'>
     class App extends React.Component {
@@ -36,6 +47,7 @@
         this.handleAddItem = this.handleAddItem.bind(this);
         this.handleClearAll = this.handleClearAll.bind(this);
         this.handleToDeactivate = this.handleToDeactivate.bind(this);
+        this.handleEnterPress= this.handleEnterPress.bind(this);
       }
       /**
        * Adds grocery item to the list
@@ -94,14 +106,20 @@
         });
       }
 
+      handleEnterPress(e) {
+        if (e.keyCode == 13) {
+          this.handleAddItem();
+        }
+      }
+
       render() {
         return (
         <div>
           <div className="input-group">
-            <input type="text" className="form-control" placehoder="Enter product name" value={ this.state.input }
-            onChange = { this.updateInput } />
+            <input type="text" className="form-control" placeholder="Enter product name" value={ this.state.input }
+            onChange = { this.updateInput } onKeyDown = { this.handleEnterPress } />
             <div className="input-group-append">
-              <button type="button" className = "btn btn-success" onClick= { this.handleAddItem }>Submit</button>
+              <button type="button" className = "btn btn-success" onClick= { this.handleAddItem }>Add product</button>
               <button type="button" className = "btn btn-info" onClick = { this.handleClearAll }>Clear all</button>
             </div>
           </div>
@@ -118,7 +136,9 @@
     function ShoppingList(props) {
       return (
         <div>
-          <h2>Must buy products</h2>
+        <div className="my-3 py-3">
+          <h2 className="display-5">Must buy products</h2>
+        </div>
           <ul>
           {
             props.list.map(item => {
@@ -126,17 +146,21 @@
               return (<li key= { item.name }>
                 <p>
                   <span>{ item.name }</span>
+                  <span style={{width:'400px', float: 'right'}}>
                   <button className="btn btn-sm btn-danger ml-1"
                   onClick = { () => {props.onRemoveItem(item.name)} }>Remove</button>
                   <button className="btn btn-sm btn-secondary ml-1"
                   onClick = { () => {props.onDeactivateItem(item.name)} }>Deactivate</button>
+                  </span>
                 </p>
               </li>
               )}
             })
           }
           </ul>
-          <h2>Product wish to buy</h2>
+        <div className="my-3 py-3">
+          <h2 className="display-5">Optional products</h2>
+        </div>
           <ul>
           {
             props.list.map(item => {
@@ -144,8 +168,10 @@
                 return <li key= { item.name }>
                   <p>
                   <span> { item.name } </span>
+                  <span style={{width:'400px', float: 'right'}}>
                   <button className="btn btn-sm btn-danger ml-1"
                   onClick = { () => props.onRemoveItem(item.name) }>Remove</button>
+                  </span>
                   </p>
                 </li>
               }
@@ -161,6 +187,5 @@
       document.getElementById('root')
     )
   </script>
-  <script src="../../js/bootstrap.min.js"></script>
 </body>
 </html>
